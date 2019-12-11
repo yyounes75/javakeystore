@@ -1,0 +1,11 @@
+
+- name: Check Java keystore
+  shell: >
+    {{ java_bin_dir }}/keytool -list -keystore {{java_default_dir}}/jre/lib/security/cacerts -storepass changeit | grep ldap_root_cacert
+  register: stat_exists_java_keystore
+  ignore_errors: True
+
+- name: Import to Java
+  command: >
+    {{ java_bin_dir }}/keytool -noprompt -import -trustcacerts -alias ldap_root_cacert -file {{ ldap_cacert_file }} -keystore {{java_default_dir}}/jre/lib/security/cacerts -storepass changeit
+  when: stat_exists_java_keystore.rc ==  1
