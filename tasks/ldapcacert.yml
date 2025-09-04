@@ -1,11 +1,11 @@
 
-- name: Check Java keystore
+- name: Check Java keystore [LDAP]
   shell: >
-    {{ java_bin_dir }}/keytool -list -keystore {{java_default_dir}}/jre/lib/security/cacerts -storepass changeit | grep ldap_root_cacert
+    {{ java_bin_dir }}/keytool -list -keystore {{ java_keystore_system_path }} -storepass changeit | grep ldap_root_cacert
   register: stat_exists_java_keystore
   ignore_errors: True
 
-- name: Import to Java
+- name: Import to Java [LDAP]
   command: >
-    {{ java_bin_dir }}/keytool -noprompt -import -trustcacerts -alias ldap_root_cacert -file {{ ldap_cacert_file }} -keystore {{java_default_dir}}/jre/lib/security/cacerts -storepass changeit
+    {{ java_bin_dir }}/keytool -noprompt -import -trustcacerts -alias ldap_root_cacert -file {{ ldap_cacert_file }} -keystore {{ java_keystore_system_path }} -storepass changeit
   when: stat_exists_java_keystore.rc ==  1

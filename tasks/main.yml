@@ -1,4 +1,4 @@
-- include: install.yml
+- include_tasks: install.yml
 
-- include: ldapcacert.yml
+- include_tasks: ldapcacert.yml
   when: ldap_cacert_file is defined
