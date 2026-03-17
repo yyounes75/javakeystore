@@ -3,6 +3,11 @@
   shell: grep -c END {{ java_keystore_cacert }}
   register: checkcacert
 
+- name: Detect Java bin directory
+  set_fact:
+    java_bin_dir: "{{ java_default_dir }}/bin"
+  when: java_default_dir is defined
+
 - name: Create folder
   file:
     path: "{{ java_keystore_path }}"
